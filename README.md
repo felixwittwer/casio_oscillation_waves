@@ -9,7 +9,7 @@ Work in progress!<br>
 Connect Casio fx-9860 GIII or GII to your Computer with the help of the USB cable.<br>
 Press [F1]<br>
 <br>
-Open the file manager of your operating system and insert the QUADGEN.G1A file into <br>
+Open the file manager of your operating system and insert the OSCIL.G1A file into <br>
 the shown device (usually D:).<br>
 <br>
 Eject device (usually D:). More info on calculator display.<br>
