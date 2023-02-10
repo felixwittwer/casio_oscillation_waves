@@ -9,12 +9,26 @@
 /*****************************************************************/
 #include "fxlib.h"
 
-int Printselection(int selected, int compareto){
+int PrintSelection(int selected, int compareto){
     if(selected==compareto){
         return MINI_REV;
     }else{
         return MINI_OVER;
     }
+}
+
+void PrintMainMenu(int selected){
+    PrintMini(0,1,(unsigned char*)" General                     ",MINI_REV);
+    PrintMini(2,9,(unsigned char*)" 1 frequency ",PrintSelection(selected,1));
+
+    PrintMini(0,18,(unsigned char*)" Oscillation                  ",MINI_REV);
+    PrintMini(2,26,(unsigned char*)" 2 string pendulum ",PrintSelection(selected,2));
+    PrintMini(2,33,(unsigned char*)" 3 springs ",PrintSelection(selected,3));
+
+    PrintMini(0,42,(unsigned char*)" Waves                       ",MINI_REV);
+    PrintMini(2,50,(unsigned char*)" 4 wavelength ",PrintSelection(selected,4));
+    PrintMini(2,57,(unsigned char*)" 5 speed of propagation ",PrintSelection(selected,5));
+
 }
 
 //****************************************************************************
@@ -70,25 +84,21 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             selected = 5;
         }
 
-        PrintMini(0,1,(unsigned char*)" General                     ",MINI_REV);
-        PrintMini(2,9,(unsigned char*)" 1 frequency ",Printselection(selected,1));
-
-        PrintMini(0,18,(unsigned char*)" Oscillation                  ",MINI_REV);
-        PrintMini(2,26,(unsigned char*)" 2 string pendulum ",Printselection(selected,2));
-        PrintMini(2,33,(unsigned char*)" 3 springs ",Printselection(selected,3));
-
-        PrintMini(0,42,(unsigned char*)" Waves                       ",MINI_REV);
-        PrintMini(2,50,(unsigned char*)" 4 wavelength ",Printselection(selected,4));
-        PrintMini(2,57,(unsigned char*)" 5 speed of propagation ",Printselection(selected,5));
+        PrintMainMenu(selected);
 
         if(key==KEY_CTRL_EXE){
             //frequency menu
             if(selected==1){
                 Bdisp_AllClr_DDVRAM();
+                PrintMini(0,1,(unsigned char*)" frequency                                   ",MINI_REV);
                 while(1){
                     GetKey(&key);
 
+                    PrintMini(0,1,(unsigned char*)" frequency                                   ",MINI_REV);
+
                     if(key==KEY_CTRL_EXIT){
+                        Bdisp_AllClr_DDVRAM();
+                        PrintMainMenu(selected);
                         break;
                     }
                 }  
@@ -96,10 +106,31 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             //string pendulum menu
             if(selected==2){
                 Bdisp_AllClr_DDVRAM();
+                PrintMini(0,1,(unsigned char*)" string pendulum                              ",MINI_REV);
                 while(1){
                     GetKey(&key);
 
+                    PrintMini(0,1,(unsigned char*)" string pendulum                              ",MINI_REV);
+
                     if(key==KEY_CTRL_EXIT){
+                        Bdisp_AllClr_DDVRAM();
+                        PrintMainMenu(selected);
+                        break;
+                    }
+                }                  
+            }
+
+            if(selected==3){
+                Bdisp_AllClr_DDVRAM();
+                PrintMini(0,1,(unsigned char*)" springs                                     ",MINI_REV);
+                while(1){
+                    GetKey(&key);
+
+                    PrintMini(0,1,(unsigned char*)" springs                                     ",MINI_REV);
+
+                    if(key==KEY_CTRL_EXIT){
+                        Bdisp_AllClr_DDVRAM();
+                        PrintMainMenu(selected);
                         break;
                     }
                 }                  
