@@ -31,6 +31,26 @@ void PrintMainMenu(int selected){
 
 }
 
+void RenderFrequency(){
+    unsigned char f[3]={0xE6,0x01,0};
+    //display title
+    PrintMini(1,1,(unsigned char*)" frequency                      ",MINI_REV);
+    //display formula
+    PrintXY(85,15,(unsigned char*)"f =",0);
+    PrintXY(110,10,(unsigned char*)"n",0);
+    PrintXY(110,20,(unsigned char*)"t",0);
+    Bdisp_DrawLineVRAM(108,18,118,18);
+    //dispaly symbols of formula
+    PrintXY(5,15,(unsigned char*)"n=",0);
+    PrintXY(5,26,(unsigned char*)"t=",0);
+    PrintXY(5,37,(unsigned char*)"f=",0);
+}
+
+void RenderWavelength(){
+    unsigned char lambda[3]={0xE7,0x4A,0};
+
+}
+
 //****************************************************************************
 //  AddIn_main (Sample program main function)
 //
@@ -90,11 +110,11 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             //frequency menu
             if(selected==1){
                 Bdisp_AllClr_DDVRAM();
-                PrintMini(0,1,(unsigned char*)" frequency                                   ",MINI_REV);
+                RenderFrequency();
                 while(1){
                     GetKey(&key);
 
-                    PrintMini(0,1,(unsigned char*)" frequency                                   ",MINI_REV);
+                    RenderFrequency();
 
                     if(key==KEY_CTRL_EXIT){
                         Bdisp_AllClr_DDVRAM();
