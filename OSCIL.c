@@ -8,6 +8,7 @@
 /*                                                               */
 /*****************************************************************/
 #include "fxlib.h"
+#include <stdio.h>
 
 int PrintSelection(int selected, int compareto){
     if(selected==compareto){
@@ -31,7 +32,7 @@ void PrintMainMenu(int selected){
 
 }
 
-void RenderFrequency(){
+void RenderFrequency(int inputfield){
     unsigned char f[3]={0xE6,0x01,0};
     //display title
     PrintMini(1,1,(unsigned char*)" frequency                      ",MINI_REV);
@@ -44,12 +45,80 @@ void RenderFrequency(){
     PrintXY(5,15,(unsigned char*)"n=",0);
     PrintXY(5,26,(unsigned char*)"t=",0);
     PrintXY(5,37,(unsigned char*)"f=",0);
+
+    if(inputfield==1){
+        PrintXY(5,15,(unsigned char*)"n=",1);
+    }else if(inputfield==2){
+        PrintXY(5,26,(unsigned char*)"t=",1);
+    }else if(inputfield==3){
+        PrintXY(5,37,(unsigned char*)"f=",1);
+    }
 }
 
 void RenderWavelength(){
-    unsigned char lambda[3]={0xE7,0x4A,0};
+    unsigned char lambda[3]={0xE6,0x4A,0};
+    //display title
+    PrintMini(1,1,(unsigned char*)" wave length                    ",MINI_REV);
+    //display formula
+    PrintXY(85,15,(unsigned char*)"  =",0);
+    PrintXY(85,15, lambda,0);
+    PrintXY(110,10,(unsigned char*)"v",0);
+    PrintXY(110,20,(unsigned char*)"f",0);
+    Bdisp_DrawLineVRAM(108,18,118,18);
+    //dispaly symbols of formula
+    PrintXY(5,15,(unsigned char*)"v=",0);
+    PrintXY(5,26,(unsigned char*)"f=",0);
+    PrintXY(5,37,(unsigned char*)" =",0);
+    PrintXY(5,37,lambda,0);
 
 }
+
+int Inputfield(int key,int inputfield, int max){
+    if(key==KEY_CTRL_UP){
+        inputfield = inputfield - 1;
+    }else if(key==KEY_CTRL_DOWN){
+        inputfield = inputfield + 1;
+    }
+
+    if(inputfield<1){
+        inputfield = max;
+    }else if(inputfield>max){
+        inputfield = 1;
+    }
+
+    return inputfield;
+}
+
+void RenderField(int x, int y,char characters[]){
+    int iteration = 0;
+    unsigned char buffer[12];
+
+    while(iteration<9){
+        sprintf(buffer, "%c", characters[iteration]);
+        PrintXY(x+(iteration*6),y,buffer,0);
+        iteration = iteration + 1;
+    }
+}
+
+void Input(int x, int y,char characters[]){
+    unsigned int key;
+    int pointer = 0;
+    while(1){
+        GetKey(&key);
+        if(key==KEY_CTRL_EXE){
+            break;
+        }else if(key==KEY_CTRL_DEL){
+            characters[pointer-1] = ' ';
+            pointer = pointer - 1;
+        }else if(key==KEY_CHAR_0||key==KEY_CHAR_1||key==KEY_CHAR_2||key==KEY_CHAR_3||key==KEY_CHAR_4||key==KEY_CHAR_5||key==KEY_CHAR_6||key==KEY_CHAR_7||key==KEY_CHAR_8||key==KEY_CHAR_9||key==KEY_CHAR_DP){
+            characters[pointer] = key;
+            pointer = pointer + 1;
+        }
+
+        RenderField(x, y, characters);
+    }
+}
+
 
 //****************************************************************************
 //  AddIn_main (Sample program main function)
@@ -68,6 +137,12 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
     unsigned int key;
     float graviatation = 9.81;
     int selected;
+    int pointer = 0;
+    int inputfield = 1;
+    char n[9] = "";
+    char t[9] = "";
+    char f[9] = "";
+    char v[9] = "";
 
     Bdisp_AllClr_DDVRAM();
 
@@ -110,11 +185,23 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
             //frequency menu
             if(selected==1){
                 Bdisp_AllClr_DDVRAM();
-                RenderFrequency();
+                RenderFrequency(inputfield);
                 while(1){
                     GetKey(&key);
 
-                    RenderFrequency();
+                    inputfield = Inputfield(key,inputfield,3);
+
+                    RenderFrequency(inputfield);
+
+                    if(key==KEY_CTRL_EXE){
+                        if(inputfield==1){
+                            Input(18,15,n);
+                        }else if(inputfield==2){
+                            Input(18,26,t);
+                        }else if(inputfield==3){
+                            Input(18,37,f);
+                        }
+                    }
 
                     if(key==KEY_CTRL_EXIT){
                         Bdisp_AllClr_DDVRAM();
@@ -123,30 +210,14 @@ int AddIn_main(int isAppli, unsigned short OptionNum)
                     }
                 }  
             }
-            //string pendulum menu
-            if(selected==2){
+            //wave length menu
+            if(selected==4){
                 Bdisp_AllClr_DDVRAM();
-                PrintMini(0,1,(unsigned char*)" string pendulum                              ",MINI_REV);
+                RenderWavelength();
                 while(1){
                     GetKey(&key);
 
-                    PrintMini(0,1,(unsigned char*)" string pendulum                              ",MINI_REV);
-
-                    if(key==KEY_CTRL_EXIT){
-                        Bdisp_AllClr_DDVRAM();
-                        PrintMainMenu(selected);
-                        break;
-                    }
-                }                  
-            }
-
-            if(selected==3){
-                Bdisp_AllClr_DDVRAM();
-                PrintMini(0,1,(unsigned char*)" springs                                     ",MINI_REV);
-                while(1){
-                    GetKey(&key);
-
-                    PrintMini(0,1,(unsigned char*)" springs                                     ",MINI_REV);
+                    RenderWavelength();
 
                     if(key==KEY_CTRL_EXIT){
                         Bdisp_AllClr_DDVRAM();

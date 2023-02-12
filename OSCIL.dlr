@@ -1,13 +1,1 @@
 [DLSimRunSpace]
-
-[Breakpoint]
-File=C:\Users\Felix\Desktop\OSCIL\OSCIL.c
-Line=62
-Flags=00001012
-Sublevel=1
-
-[Breakpoint]
-File=C:\Users\Felix\Desktop\OSCIL\OSCIL.c
-Line=62
-Flags=00001012
-Sublevel=2
