@@ -15,7 +15,7 @@ Press [F1]<br>
 ### For PROGRAMM/OSCIL.g1m
 Open the file manager of your operating system and insert the .g1m file into **@MainMem/PROGRAM/** of the shown device (usually D:).
 
-### For OSCIL.G1A
+### For OSCIL.G1A in add-in branche
 
 Open the file manager of your operating system and insert the OSCIL.G1A file into <br>
 the shown device (usually D:).<br>
